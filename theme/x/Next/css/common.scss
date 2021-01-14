@@ -2,12 +2,11 @@
  * skin style
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 0.2.1.0, Dec 24, 2018
+ * @version 0.2.1.1, Sep 9, 2018
 */
 
 @import 'variables';
 @import '../../../scss/basic';
-@import '../../../scss/github';
 
 // reset
 html {
@@ -27,12 +26,6 @@ body {
 ::selection {
   background: #262a30;
   color: #fff;
-}
-
-.pipe-content__reset {
-  pre > code {
-    background-image: url(../../../images/code-bg.png);
-  }
 }
 
 a {
@@ -952,7 +945,7 @@ a:hover {
   .footer {
     margin-top: 20px;
     padding: 20px 0;
-    .fn-right {
+    .fn__right {
       float: none;
     }
   }

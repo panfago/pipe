@@ -2,12 +2,11 @@
  * skin style
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 0.2.1.0, Dec 24, 2018
+ * @version 0.2.1.2, Sep 9, 2019
 */
 
 @import 'variables';
 @import '../../../scss/basic';
-@import '../../../scss/github';
 
 // reset
 body {
@@ -17,6 +16,7 @@ body {
   display: flex;
   flex-direction: column;
   height: 100%;
+  min-height: 100%;
 }
 
 a {
@@ -42,7 +42,7 @@ svg {
   outline: none;
 }
 
-.pipe-content__reset a {
+.vditor-reset a {
   color: #ff4d3a;
 
   &:hover {
@@ -156,6 +156,12 @@ svg {
 
     &-avatar {
       padding-left: 45px;
+      word-break: break-all;
+      -webkit-line-clamp: 2;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      -webkit-box-orient: vertical;
+      display: -webkit-box;
     }
   }
 
@@ -383,7 +389,7 @@ svg {
     margin-bottom: 20px;
     border: 1px solid #ededed;
 
-    .pipe-content__reset {
+    .vditor-reset {
       margin-bottom: 10px;
     }
   }
@@ -402,7 +408,7 @@ svg {
       font-size: 0;
     }
 
-    div.fn-none {
+    div.fn__none {
       transition: $transition;
       svg {
         color: #fff;
@@ -416,7 +422,7 @@ svg {
       div:first-child {
         transform: scale(1.2);
       }
-      div.fn-none {
+      div.fn__none {
         display: block;
         position: absolute;
         top: 0;
@@ -649,12 +655,12 @@ svg {
     margin-top: 20px;
   }
 
-  .footer .fn-right {
+  .footer .fn__right {
     float: none;
   }
 
   .header__sub-title,
-  .header .fn-right,
+  .header .fn__right,
   .nav {
     display: none;
   }
@@ -668,7 +674,7 @@ svg {
     background-color: rgba(255, 255, 255, 0.95);
     border-bottom: 1px solid #eee;
 
-    .fn-none {
+    .fn__none {
       float: right;
       margin-top: 12.5px;
       height: 20px;

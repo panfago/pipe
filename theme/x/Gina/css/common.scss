@@ -2,12 +2,11 @@
  * skin style
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 0.2.1.0, Dec 24, 2018
+ * @version 0.2.1.2, Sep 9, 2019
 */
 
 @import 'variables';
 @import '../../../scss/basic';
-@import '../../../scss/github';
 
 // reset
 html {
@@ -27,12 +26,6 @@ body {
 
 a {
   transition: $transition;
-}
-
-.pipe-content__reset {
-  pre > code {
-    background-image: url(../../../images/code-bg.png);
-  }
 }
 
 // function
@@ -211,10 +204,12 @@ a {
   &__logo {
     position: absolute;
     left: 20px;
+    background-color: rgba(255, 255, 255, .68);
     img {
       height: 35px;
       width: 35px;
       flex-shrink: 0;
+      margin-top: 15px;
     }
 
     div {
@@ -255,7 +250,7 @@ a {
     height: 65px;
     box-sizing: border-box;
 
-    a.fn-right {
+    a.fn__right {
       padding: 0 20px 0 0;
       box-sizing: border-box;
 
@@ -995,7 +990,7 @@ a {
     }
   }
 
-  .side > .fn-none {
+  .side > .fn__none {
     display: block;
     &.module__list li {
       border-bottom: 1px dotted $border-color;
@@ -1017,7 +1012,7 @@ a {
   .footer__info {
     text-align: right;
     padding: 20px 0;
-    .fn-right {
+    .fn__right {
       float: none;
     }
   }

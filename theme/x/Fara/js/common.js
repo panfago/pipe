@@ -2,7 +2,7 @@
  * @fileoverview util and every page should be used.
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 0.3.0.0, Oct 31, 2018
+ * @version 1.0.0.0, May 28, 2019
  */
 
 import $ from 'jquery'
@@ -12,8 +12,7 @@ import {
   PreviewImg,
   initPjax,
 } from '../../../js/common'
-import config from '../../../../pipe.json'
-
+import { InitComment, InitToc } from '../../../js/article'
 const Common = {
   /**
    * @description 页面初始化
@@ -24,12 +23,7 @@ const Common = {
 
     initPjax(() => {
       if ($('#pipeComments').length === 1) {
-        $.ajax({
-          method: 'GET',
-          url: `${config.StaticServer}/theme/x/Fara/js/article.min.js`,
-          dataType: 'script',
-          cache: true,
-        })
+        Article.init()
       }
       $('.nav a, .mobile__nav a').removeClass('nav--current')
       $('.nav a, .mobile__nav a').each(function (i) {
@@ -102,12 +96,33 @@ const Common = {
     }))
   },
 }
+const Article = {
+  /**
+   * @description 页面初始化
+   */
+  init: () => {
+    if ($('#toc').length === 1) {
+      InitToc('toc', 'articleContent')
+
+      $('#toc a').each(function () {
+        $(this).data('href', $(this).attr('href')).attr('href', 'javascript:void(0)')
+      }).click(function () {
+        const hash = $(this).data('href')
+        location.hash = hash
+        $(window).scrollTop($(hash)[0].offsetTop)
+      })
+    }
+
+    InitComment()
+  },
+}
 
 if (!window.increase) {
   window.increase = Common.increase
   window.addLevelToTag = Common.addLevelToTag
   Icon()
   Common.init()
+  if ($('#pipeComments').length === 1) {
+    Article.init()
+  }
 }
-
-export default Common

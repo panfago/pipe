@@ -2,18 +2,19 @@
  * @fileoverview util and every page should be used.
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 0.3.0.0, Oct 31, 2018
+ * @version 1.0.0.0, May 28, 2019
  */
 
 import $ from 'jquery'
-import APlayer from 'APlayer'
+import APlayer from 'aplayer'
 import Icon from './symbol'
 import {
   initPjax,
   KillBrowser,
   PreviewImg,
 } from '../../../js/common'
-import config from '../../../../pipe.json'
+import { InitComment, ShowEditor } from '../../../js/article'
+import QRious from 'qrious'
 
 const Common = {
   /**
@@ -35,9 +36,25 @@ const Common = {
         {
           name: 'Kiss The Rain',
           artist: '이루마',
-          url: `${config.StaticServer}/theme/x/Littlewin/images/kisstherain.mp3`,
-          cover: `${config.StaticServer}/theme/x/Littlewin/images/kisstherain.jpeg`,
-          lrc: `${config.StaticServer}/theme/x/Littlewin/images/kisstherain.lrc`,
+          url: `${$('#pipeLang').data('staticserver')}/theme/x/Littlewin/images/kisstherain.mp3`,
+          cover: `${$('#pipeLang').data('staticserver')}/theme/x/Littlewin/images/kisstherain.jpeg`,
+          lrc: `${$('#pipeLang').data('staticserver')}/theme/x/Littlewin/images/kisstherain.lrc`,
+          theme: '#60b044',
+        },
+        {
+          name: 'L\'ESPOIR',
+          artist: 'Richard',
+          url: `${$('#pipeLang').data('staticserver')}/theme/x/Littlewin/images/LESPOIR.mp3`,
+          cover: `${$('#pipeLang').data('staticserver')}/theme/x/Littlewin/images/LESPOIR.jpeg`,
+          lrc: `${$('#pipeLang').data('staticserver')}/theme/x/Littlewin/images/LESPOIR.lrc`,
+          theme: '#60b044',
+        },
+        {
+          name: 'ACOMMAMOUR',
+          artist: 'Richard',
+          url: `${$('#pipeLang').data('staticserver')}/theme/x/Littlewin/images/ACOMMAMOUR.mp3`,
+          cover: `${$('#pipeLang').data('staticserver')}/theme/x/Littlewin/images/ACOMMAMOUR.jpeg`,
+          lrc: `${$('#pipeLang').data('staticserver')}/theme/x/Littlewin/images/ACOMMAMOUR.lrc`,
           theme: '#60b044',
         },
       ],
@@ -45,12 +62,7 @@ const Common = {
 
     initPjax(() => {
       if ($('#pipeComments').length === 1) {
-        $.ajax({
-          method: 'GET',
-          url: `${config.StaticServer}/theme/x/Littlewin/js/article.min.js`,
-          dataType: 'script',
-          cache: true,
-        })
+        Article.init()
       }
     })
 
@@ -94,10 +106,68 @@ const Common = {
   },
 }
 
+const Article = {
+  /**
+   * @description 页面初始化
+   */
+  init: () => {
+    $('#articleCommentBtn').click(function () {
+      const $this = $(this)
+      ShowEditor($this.data('title'), $this.data('id'))
+    })
+
+    InitComment()
+
+    Article._share();
+  },
+  _share: () => {
+    const $this = $('.post__share')
+    const $qrCode = $this.find('.post__code')
+    const shareURL = $qrCode.data('url')
+    const avatarURL = $qrCode.data('avatar')
+    const title = encodeURIComponent($qrCode.data('title') + ' - ' + $qrCode.data('blogtitle')),
+      url = encodeURIComponent(shareURL)
+
+    const urls = {}
+    urls.tencent = 'http://share.v.t.qq.com/index.php?c=share&a=index&title=' + title +
+      '&url=' + url + '&pic=' + avatarURL
+    urls.weibo = 'http://v.t.sina.com.cn/share/share.php?title=' +
+      title + '&url=' + url + '&pic=' + avatarURL
+    urls.google = 'https://plus.google.com/share?url=' + url
+    urls.twitter = 'https://twitter.com/intent/tweet?status=' + title + ' ' + url
+    urls.qqz =`https://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url=${url}&sharesource=qzone&title=${title}&pics=${avatarURL}`,
+
+      $this.find('span').click(function () {
+        const key = $(this).data('type')
+
+        if (!key) {
+          return;
+        }
+
+        if (key === 'wechat') {
+          if ($qrCode.css('background-image') === 'none') {
+            const qr = new QRious({
+              element: $qrCode[0],
+              value: shareURL,
+              size: 128
+            })
+            $qrCode.css('background-image', `url(${qr.toDataURL('image/jpeg')})`).hide()
+          }
+          $qrCode.slideToggle()
+          return false
+        }
+
+        window.open(urls[key], '_blank', 'top=100,left=200,width=648,height=618')
+      })
+  }
+}
+
 if (!window.increase) {
   window.increase = Common.increase
   window.addLevelToTag = Common.addLevelToTag
   Icon()
   Common.init()
+  if ($('#pipeComments').length === 1) {
+    Article.init()
+  }
 }
-export default Common
